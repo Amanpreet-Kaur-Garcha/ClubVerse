@@ -1,16 +1,48 @@
 @import "tailwindcss";
 
 :root {
-	--primary: #4f46e5;
-	--secondary: #3b82f6;
-	--tertiary: #6d28d9;
-	--neutral: #64748b;
+	--primary: #635bff;
+	--primaryDark: #564cf7;
+	--secondary: #8b5cf6;
+
+	--background: #f8fafc;
+
+	--card: #ffffff;
+
+	--text: #0f172a;
+
+	--muted: #64748b;
+
+	--border: #e2e8f0;
+
+	--danger: #ef4444;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
 }
 
 body {
-	font-family: "Inter", sans-serif;
+	font-family: Inter, sans-serif;
+	background: var(--background);
+	color: var(--text);
 }
 
-.label-font {
-	font-family: "JetBrains Mono", monospace;
+button {
+	cursor: pointer;
+}
+
+input,
+select {
+	outline: none;
+}
+
+a {
+	text-decoration: none;
 }
