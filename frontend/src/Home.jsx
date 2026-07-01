@@ -3,22 +3,16 @@ import Hero from "../components/Hero";
 import Stats from "../components/Stats";
 import FeaturedClubs from "../components/FeaturedClubs";
 
-export default function Home(){
+export default function Home() {
+	return (
+		<>
+			<Navbar />
 
-return(
+			<Hero />
 
-<>
+			<Stats />
 
-<Navbar/>
-
-<Hero/>
-
-<Stats/>
-
-<FeaturedClubs/>
-
-</>
-
-)
-
+			<FeaturedClubs />
+		</>
+	);
 }
