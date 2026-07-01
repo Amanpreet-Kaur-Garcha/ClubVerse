@@ -1,6 +1,15 @@
-import { MapPin, Users } from "lucide-react";
+import { MapPin, Users, CalendarDays } from "lucide-react";
 
 export default function EventCard({ event }) {
+  const formattedDate = new Date(event.date).toLocaleDateString(
+    "en-IN",
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }
+  );
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden border shadow-sm hover:shadow-xl transition duration-300">
 
@@ -12,17 +21,22 @@ export default function EventCard({ event }) {
         }
         alt={event.title}
         className="h-60 w-full object-cover"
+        onError={(e) => {
+          e.target.src =
+            "https://placehold.co/600x400/e0e7ff/4338ca?text=ClubVerse+Event";
+        }}
       />
 
       <div className="p-5">
 
         {/* Date */}
-        <span className="text-indigo-600 text-sm font-semibold">
-          {event.date}
-        </span>
+        <div className="flex items-center gap-2 text-indigo-600 text-sm font-semibold">
+          <CalendarDays size={16} />
+          <span>{formattedDate}</span>
+        </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-bold mt-2">
+        <h2 className="text-2xl font-bold mt-3">
           {event.title}
         </h2>
 
@@ -33,15 +47,15 @@ export default function EventCard({ event }) {
         </div>
 
         {/* Category & Attendees */}
-        <div className="flex justify-between mt-4 text-gray-500">
+        <div className="flex justify-between items-center mt-4">
 
           <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm">
             {event.category}
           </span>
 
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2 text-gray-500">
             <Users size={18} />
-            {event.attendees || 0}
+            {event.attendees ?? 0}
           </span>
 
         </div>
@@ -64,7 +78,6 @@ export default function EventCard({ event }) {
         </div>
 
       </div>
-
     </div>
   );
 }

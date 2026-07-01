@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getEvents, saveEvents } from "../../utils/storage";
+import { createEvent, updateEvent } from "../../api/eventApi";
 
 export default function EventForm({ onAdd, editingEvent }) {
   const [event, setEvent] = useState({
@@ -13,7 +13,16 @@ export default function EventForm({ onAdd, editingEvent }) {
 
   useEffect(() => {
     if (editingEvent) {
-      setEvent(editingEvent);
+      setEvent({
+        title: editingEvent.title || "",
+        category: editingEvent.category || "",
+        venue: editingEvent.venue || "",
+        date: editingEvent.date
+          ? editingEvent.date.split("T")[0]
+          : "",
+        price: editingEvent.price || "",
+        image: editingEvent.image || "",
+      });
     } else {
       setEvent({
         title: "",
@@ -35,7 +44,7 @@ export default function EventForm({ onAdd, editingEvent }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -48,34 +57,32 @@ export default function EventForm({ onAdd, editingEvent }) {
       return;
     }
 
-    const events = getEvents();
-
-    if (editingEvent) {
-      const updatedEvents = events.map((item) =>
-        item.id === editingEvent.id ? event : item
-      );
-
-      saveEvents(updatedEvents);
-    } else {
-      const newEvent = {
+    try {
+      const payload = {
         ...event,
-        id: Date.now(),
-        attendees: 0,
+        price: Number(event.price) || 0,
       };
 
-      saveEvents([...events, newEvent]);
+      if (editingEvent) {
+        await updateEvent(editingEvent._id, payload);
+      } else {
+        await createEvent(payload);
+      }
+
+      setEvent({
+        title: "",
+        category: "",
+        venue: "",
+        date: "",
+        price: "",
+        image: "",
+      });
+
+      onAdd();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save event.");
     }
-
-    setEvent({
-      title: "",
-      category: "",
-      venue: "",
-      date: "",
-      price: "",
-      image: "",
-    });
-
-    onAdd();
   };
 
   return (
@@ -139,8 +146,6 @@ export default function EventForm({ onAdd, editingEvent }) {
             placeholder="Image URL"
             className="border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-
-          {/* Live Image Preview */}
 
           <div className="md:col-span-2">
             {event.image ? (
