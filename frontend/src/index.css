@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 :root {
 	--primary: #635bff;
@@ -45,4 +45,11 @@ select {
 
 a {
 	text-decoration: none;
+} */
+
+@import "tailwindcss";
+
+body{
+    background:#f7f7fd;
+    font-family:Inter,sans-serif;
 }
